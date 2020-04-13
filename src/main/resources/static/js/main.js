@@ -39,7 +39,7 @@ function onConnected() {
     // Tell your username to the server
     stompClient.send("/app/chat.register",
         {},
-        JSON.stringify({ user: username, type: 'JOIN' })
+        JSON.stringify({ userName: username, type: 'JOIN' })
     )
 
     connectingElement.classList.add('hidden');
@@ -57,7 +57,7 @@ function send(event) {
 
     if (messageContent && stompClient) {
         var chatMessage = {
-            user: username,
+            userName: username,
             content: messageInput.value,
             type: 'CHAT'
         };
@@ -78,22 +78,22 @@ function onMessageReceived(payload) {
 
     if (message.type === 'JOIN') {
         messageElement.classList.add('event-message');
-        message.content = message.user + ' joined!';
+        message.content = message.userName + ' joined!';
     } else if (message.type === 'LEAVE') {
         messageElement.classList.add('event-message');
-        message.content = message.user + ' left!';
+        message.content = message.userName + ' left!';
     } else {
         messageElement.classList.add('chat-message');
 
         var avatarElement = document.createElement('i');
-        var avatarText = document.createTextNode(message.user[0]);
+        var avatarText = document.createTextNode(message.userName[0]);
         avatarElement.appendChild(avatarText);
-        avatarElement.style['background-color'] = getAvatarColor(message.user);
+        avatarElement.style['background-color'] = getAvatarColor(message.userName);
 
         messageElement.appendChild(avatarElement);
 
         var usernameElement = document.createElement('span');
-        var usernameText = document.createTextNode(message.user);
+        var usernameText = document.createTextNode(message.userName);
         usernameElement.appendChild(usernameText);
         messageElement.appendChild(usernameElement);
     }
